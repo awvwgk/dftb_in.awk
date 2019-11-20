@@ -77,21 +77,38 @@ if ((getline charge < ".CHRG") > 0) {
 print "  MaxAngularMomentum {";
 printf "%s", MAM
 print "  }";
-print "  HubbardDerivs {";
-printf "%s", HD
-print "  }";
-print "  ThirdOrder = Yes";
+print "  MaxSCCIterations = 250";
+if (method == "3ob" || method "3ob-3-1") {
+  print "  HubbardDerivs {";
+  printf "%s", HD;
+  print "  }";
+  print "  ThirdOrder = Yes";
+  #print "  ThirdOrderFull = Yes";
+  print "  HCorrection = Damping {";
+  print "    Exponent = 4.0";
+  print "  }";
+}
 print "  SlaterKosterFiles = Type2FileNames {";
-print "    Prefix = \"/home/ehlert/git/DFTB+/external/slakos/origin/3ob-3-1/\"";
-#print "    Prefix = \"/home/ehlert/git/DFTB+/external/slakos/origin/matsci-0-3/\"";
-#print "    Prefix = \"/home/ehlert/git/DFTB+/external/slakos/origin/pbc-0-3/\"";
-#print "    Prefix = \"/home/ehlert/git/DFTB+/external/slakos/origin/ob2-1-1/base/\"";
+format = "    Prefix = \"/home/ehlert/git/DFTB+/external/slakos/origin/%s/\"\n";
+if (method == "3ob" || method == "3ob-3-1") {
+  printf format, "3ob-3-1";
+} else if (method == "matsci" || method == "matsci-0-3") {
+  printf format, "matsci-0-3";
+} else if (method == "mio" || method == "mio-1-1") {
+  printf format, "mio-1-1";
+} else if (method == "pbc" || method == "pbc-0-3") {
+  printf format, "pbc-0-3";
+} else if (method == "ob2" || method == "ob2-1-1") {
+  printf format, "ob2-1-1";
+}
 print "    Separator = \"-\"";
 print "    Suffix = \".skf\"";
 print "  }";
-#print "  RangeSeparated = LC {";
-#print "    Screening = NeighbourBased {}";
-#print "  }";
+if (method == "ob2" || method == "ob2-1-1") {
+  print "  RangeSeparated = LC {";
+  print "    Screening = NeighbourBased {}";
+  print "  }";
+}
 print "}";
 print "Options {";
 print "  WriteResultsTag = Yes";
