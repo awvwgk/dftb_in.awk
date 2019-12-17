@@ -78,7 +78,7 @@ print "  MaxAngularMomentum {";
 printf "%s", MAM
 print "  }";
 print "  MaxSCCIterations = 250";
-if (method == "3ob" || method "3ob-3-1") {
+if (method == "3ob" || method == "3ob-3-1") {
   print "  HubbardDerivs {";
   printf "%s", HD;
   print "  }";
